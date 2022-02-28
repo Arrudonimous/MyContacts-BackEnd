@@ -22,8 +22,26 @@ class ContactController {
     response.json(contact);
   }
 
-  store() {
+  async store(request, response) {
     // Criar um novo registro
+
+    const {
+      name, email, phone, category_id,
+    } = request.body;
+
+    const contact = await ContactsRepository.findByEmail(email);
+
+    if (contact) {
+      return response.send('User is already created!');
+    }
+
+    const create = await ContactsRepository.push({
+      name, email, phone, category_id,
+    });
+
+    if (create) {
+      return response.send('User created');
+    }
   }
 
   update() {

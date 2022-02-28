@@ -15,5 +15,7 @@ module.exports = {
     'class-methods-use-this': 0,
     'no-promise-executor-return': 0,
     'consistent-return': 0,
+    camelcase: 0,
+    'object-curly-newline': 0,
   },
 };

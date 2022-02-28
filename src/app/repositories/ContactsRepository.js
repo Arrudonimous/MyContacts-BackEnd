@@ -42,6 +42,22 @@ class ContactsRepository {
       resolve();
     });
   }
+
+  findByEmail(email) {
+    return new Promise((resolve) => resolve(
+      contacts.find((contact) => contact.email === email),
+    ));
+  }
+
+  push({ name, email, phone, category_id }) {
+    const contact = {
+      name, email, phone, category_id,
+    };
+
+    return new Promise((resolve) => resolve(
+      contacts.unshift(contact),
+    ));
+  }
 }
 
 module.exports = new ContactsRepository();
