@@ -12,14 +12,14 @@ class ContactController {
     // Obter UM registro
     const { id } = request.params;
 
-    const contact = await ContactsRepository.findById(id);
+    const contactExists = await ContactsRepository.findById(id);
 
-    if (!contact) {
+    if (!contactExists) {
       // 404: Not found
       return response.send(404).json({ error: 'User not found' });
     }
 
-    response.json(contact);
+    response.json(contactExists);
   }
 
   async store(request, response) {
@@ -34,7 +34,7 @@ class ContactController {
     const contactExists = await ContactsRepository.findByEmail(email);
 
     if (contactExists) {
-      return response.status(400).json({ error: 'This e-mail is already been taken' });
+      return response.status(400).json({ error: 'This e-mail is already in use' });
     }
 
     const contact = await ContactsRepository.create({
@@ -46,8 +46,29 @@ class ContactController {
     }
   }
 
-  update() {
+  async update(request, response) {
     // Editar um registro
+    const { id } = request.params;
+    const { name, email, phone, category_id } = request.body;
+
+    const contactExists = await ContactsRepository.findById(id);
+    if (!contactExists) {
+      return response.send(404).json({ error: 'User not found!' });
+    }
+
+    if (!name) {
+      return response.status(400).json({ error: 'Please, type a name' });
+    }
+
+    const contactByEmail = await ContactsRepository.findByEmail(email);
+
+    if (contactByEmail) {
+      return response.status(400).json({ error: 'This e-mail is already in use' });
+    }
+
+    const contact = await ContactsRepository.update(id, { name, email, phone, category_id });
+
+    response.json(contact);
   }
 
   async delete(request, response) {
