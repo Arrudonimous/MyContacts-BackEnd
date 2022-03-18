@@ -16,25 +16,44 @@ class CategoryController {
 
     const category = await CategoriesRepository.create({ name });
 
-    res.json({ category });
+    res.json({ created: category });
   }
 
   async index(req, res) {
-    const categories = await CategoriesRepository.findAll();
+    const { orderBy } = req.query;
 
-    res.json({ categories });
+    const categories = await CategoriesRepository.findAll(orderBy);
+
+    res.json(categories);
   }
 
-  update(req, res) {
+  async update(req, res) {
+    const { id } = req.params;
+    const { name } = req.body;
 
+    const updatedCategory = await CategoriesRepository.update(id, { name });
+
+    res.json(updatedCategory);
   }
 
-  delete(req, res) {
+  async delete(req, res) {
+    const { id } = req.params;
 
+    await CategoriesRepository.delete(id);
+
+    res.sendStatus(204);
   }
 
-  show(req, res) {
+  async show(req, res) {
+    const { id } = req.params;
 
+    const category = await CategoriesRepository.findById(id);
+
+    if (!category) {
+      res.send(404).json({ error: 'No category found' });
+    }
+
+    res.json(category);
   }
 }
 
