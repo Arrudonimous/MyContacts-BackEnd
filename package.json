@@ -12,7 +12,6 @@
   "dependencies": {
     "express": "^4.17.3",
     "pg": "^8.7.3",
-    "uuid": "^8.3.2",
     "yarn": "^1.22.17"
   },
   "devDependencies": {

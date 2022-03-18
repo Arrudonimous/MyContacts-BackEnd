@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS contacts(
   phone VARCHAR,
   category_id UUID,
   FOREIGN KEY (category_id) REFERENCES categories(id)
-)
+);
 
 
